@@ -17,8 +17,8 @@ body {
 .nav__list {
   display: flex;
   font-size: 18px;
-  display: flex;
-  justify-content: flex-end;
+  /* display: flex;
+  justify-content: flex-end; */
 }
 
 .nav__btn {
