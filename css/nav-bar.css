@@ -1,0 +1,42 @@
+.nav {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  box-sizing: border-box;
+  background-color: rgb(26, 26, 26);
+}
+
+.nav__list {
+  font-size: 15px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__btn {
+  float: left;
+  border-right: 1px solid black;
+  width: 18vh;
+  transition: background-color 0.3s ease-in-out;
+}
+.nav__btn:first-child {
+  border-left: 1px solid black;
+}
+
+.nav__btn a {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  text-decoration: none;
+  padding: 25px 15px;
+}
+
+.nav__btn .fas {
+  margin-right: 4px;
+}
+
+.nav__btn:hover {
+  background-color: black;
+}
