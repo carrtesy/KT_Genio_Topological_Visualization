@@ -16,13 +16,20 @@
     stroke-opacity: 0.6;  
 }
 
+
 .nodes circle {
   stroke: #fff;
   stroke-width: 1.5px;
 }
 
 text {
-  fill: white;
+  fill: black;
+  font-family: sans-serif;
+  font-size: 10px;
+}
+
+.node_detail {
+  fill: black;
   font-family: sans-serif;
   font-size: 10px;
 }

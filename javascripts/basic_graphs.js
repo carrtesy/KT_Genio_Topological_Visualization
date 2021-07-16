@@ -63,17 +63,28 @@ let edges = svg.selectAll("path")
     .attr("class", "link")
     .attr("d", d => `M${d.source.x} ${d.source.y}`+ " " + `L${d.target.x} ${d.target.y}`)
     .style("stroke", "blue")
-    .style("storke-width", "1px");
+    .style("stroke-width", "1px");
 
-let vertex = svg.selectAll("circle")
-    .data(nodes)
-    .enter().append("circle")
+const ICONWIDTH = 64;
+const ICONHEIGHT = 64;
+
+let vertex = svg
+    .selectAll("node")
+    .data(nodes);
+
+vertex.enter().append("image")
     .attr("class", "node")
-    .attr("r", d => d.r)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .style("fill", "red");
+    .attr("xlink:href", "http://simpleicon.com/wp-content/uploads/cloud-9-64x64.png")
+    .attr("x", d => d.x  - ICONWIDTH / 2)
+    .attr("y", d => d.y - ICONHEIGHT / 2)    
+    .attr("width", ICONWIDTH)
+    .attr("height", ICONHEIGHT);
 
+vertex.enter().append("text")
+    .attr("class", "node_detail")
+    .attr("dx", d => d.x)
+    .attr("dy", d => d.y + ICONHEIGHT / 2)
+    .text(d => d.ip);
 
 // vertex
 vertex.call(d3.drag()
@@ -84,6 +95,7 @@ vertex.call(d3.drag()
 
 // change position when dragged
 function dragged(d) {
+    console.log("dragged!");
     d.x = d3.event.x;
     d.y = d3.event.y;
 
