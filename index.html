@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <link rel="stylesheet" href="css/style.css">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="css/graph.css">
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <title>Document</title>
-</head>
+    <!-- CSS, D3.js Library -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/graph.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <title>KT Genio Topological Visualization</title>
+  </head>
 
-<body>
-  <nav class="nav">
-    <img class="nav__logo" src="images/logo.png" alt="KT Genio+">
-    <ul class="nav__list">
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-desktop"></i>실시간 모니터링</a>
-      </li>
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-table"></i>상황 대응</a>
-      </li>
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-exclamation-triangle"></i>장애 현황</a>
-      </li>
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-shield-alt"></i>AI 장애 분석</a>
-      </li>
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-exclamation-circle"></i>AI 이벤트</a>
-      </li>
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-tasks"></i>작업 관리</a>
-      </li>
-      <li class="nav__btn">
-        <a href="#"><i class="fas fa-signal"></i>통계</a>
-      </li>
-    </ul>
-  </nav>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav">
+      <img class="nav__logo" src="images/logo.png" alt="KT Genio+">
+      <ul class="nav__list">
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-desktop"></i>실시간 모니터링</a>
+        </li>
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-table"></i>상황 대응</a>
+        </li>
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-exclamation-triangle"></i>장애 현황</a>
+        </li>
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-shield-alt"></i>AI 장애 분석</a>
+        </li>
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-exclamation-circle"></i>AI 이벤트</a>
+        </li>
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-tasks"></i>작업 관리</a>
+        </li>
+        <li class="nav__btn">
+          <a href="#"><i class="fas fa-signal"></i>통계</a>
+        </li>
+      </ul>
+    </nav>
 
-  <main class="main">
-    <svg width="900" height="600"> </svg>
-    </div>
-
+    <!-- Main SVG Object Here -->
+    <main class="main">
+      <svg width="900" height="600"></svg>
+    </main>
+    
+    <!-- Javascripts -->
     <script src="https://kit.fontawesome.com/b02ee12390.js" crossorigin="anonymous"></script>
     <!-- <script src="javascripts/test_topology.js"></script> -->
-
     <script src="javascripts/basic_graphs.js"></script>
+    
   </body>
 
 </html>
