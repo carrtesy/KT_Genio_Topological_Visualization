@@ -6,8 +6,36 @@ const image_link = {
     "db": "images/database.png"
 }
 
+const files = [
+    "data/take1.json",
+    "data/take2.json"
+]
+
+//timer 함수 부르고 
+//render_page (1~)
+    //timer stop
+
+
+let index = 0;
+render_page(`data/take${index++%2}.json`);
+let timer = setInterval(() => {
+    // d3.select("svg").delete();
+    d3.selectAll('g').remove();
+    d3.selectAll("link_ok").remove();
+    d3.selectAll("link_bad").remove();
+    
+    let filename = `data/take${index++%2}.json`; 
+    render_page(filename);
+}, 1000);
+
+// render_page("data/take1.json");
+
+
 // main logic
-d3.json("data/dummy_data.json", function(data){
+function render_page(jsonfile){
+console.log(jsonfile);
+
+d3.json(jsonfile, function(data){
     let nodes = data["nodes"];
     let links = data["links"];
     const ICONWIDTH = 64;
@@ -36,7 +64,7 @@ d3.json("data/dummy_data.json", function(data){
     
 
     function node_is_bad(node){
-        return links.some( (v, i) => v.status == 1 && (v.source == node || v.target == node));
+        return links.some( (v, i) => v.status == 1 && (v.source === node || v.target === node));
     }
 
     // vertex
@@ -86,3 +114,6 @@ d3.json("data/dummy_data.json", function(data){
         console.log("drag ended!");
     }
 })
+
+
+}
