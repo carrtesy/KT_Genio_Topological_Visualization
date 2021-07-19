@@ -77,7 +77,7 @@ let vertex = svg
             .on("end", dragend));
 
 vertex.append("image")
-        .attr("xlink:href", "images/cloud-9-64x64.png")
+        .attr("xlink:href", "images/pc-64x64.png")
         .attr("x", d => -ICONWIDTH / 2)
         .attr("y", d => -ICONHEIGHT / 2)    
         .attr("width", ICONWIDTH)
@@ -86,7 +86,7 @@ vertex.append("image")
 vertex.append("text")
         .attr("class", "node_detail")
         .attr("dx", d => 0)
-        .attr("dy", d => ICONHEIGHT / 2)
+        .attr("dy", d => ICONHEIGHT)
         .text(d => d.ip);
 
 // change position when dragged
