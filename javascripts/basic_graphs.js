@@ -1,5 +1,11 @@
 "use strict";
 
+const image_link = {
+    "cloud": "images/pc-64x64.png",
+    "vm": "images/cloud-9-64x64.png",
+    "db": "images/database.png"
+}
+
 // main logic
 d3.json("data/dummy_data.json", function(data){
     let nodes = data["nodes"];
@@ -25,25 +31,27 @@ d3.json("data/dummy_data.json", function(data){
     let edges = svg.selectAll("path")
     .data(links)
     .enter().append("path")
-    .attr("class", "link")
+    .attr("class", d => d.status == 0? "link_ok": "link_bad")
     .attr("d", d => `M${d.source.x} ${d.source.y}`+ " " + `L${d.target.x} ${d.target.y}`)
-    .style("stroke", "blue")
-    .style("stroke-width", "1px");
+    
+
+    function node_is_bad(node){
+        return links.some( (v, i) => v.status == 1 && (v.source == node || v.target == node));
+    }
 
     // vertex
-    let vertex = svg
-    .selectAll("node")
+    let vertex = svg.selectAll("node")
     .data(nodes)
     .enter().append("g")
     .attr("transform", d => `translate(${d.x},${d.y})`)
-    .attr("class", "node")
-    .call(d3.drag()    
+    .attr("class", d => node_is_bad(d)? "node_bad": "node_ok")
+    .call(d3.drag()
             .on("start", dragstart)
             .on("drag", dragged)
             .on("end", dragend));
 
     vertex.append("image")
-        .attr("xlink:href", "images/pc-64x64.png")
+        .attr("xlink:href", d => image_link[d.type])
         .attr("x", d => -ICONWIDTH / 2)
         .attr("y", d => -ICONHEIGHT / 2)    
         .attr("width", ICONWIDTH)
@@ -78,5 +86,3 @@ d3.json("data/dummy_data.json", function(data){
         console.log("drag ended!");
     }
 })
-
-

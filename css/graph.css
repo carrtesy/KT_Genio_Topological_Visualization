@@ -3,25 +3,29 @@
 */
 
 
-/* 
-    Line, Nodes, and Text
-*/
-.links line {
-  stroke: #999;
-  stroke-opacity: 0.6;
+/* links */
+
+.link_ok {
+  stroke:blue;
+  stroke-opacity: 1px;
 }
 
-.links dangerline{
-    stroke: #ff0000;
-    stroke-opacity: 0.6;  
+.link_bad {
+  stroke:red;
+  stroke-opacity: 1px;  
 }
 
+/* nodes */
+g.node_ok {
 
-.nodes circle {
-  stroke: #fff;
-  stroke-width: 1.5px;
 }
 
+g.node_bad {
+  outline: solid 3px red;
+  outline-offset: 5px;
+}
+
+/* node descriptions */
 text {
   fill: black;
   font-family: sans-serif;
