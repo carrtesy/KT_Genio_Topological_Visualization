@@ -51,10 +51,6 @@ links.some(function(v, i) {
     v.index = ++i;
 });
 
-console.log(nodes);
-console.log(links);
-console.info(d3.select("body").select("svg"));
-
 // set edges, vertex
 let svg = d3.select("body").select("svg");
 let edges = svg.selectAll("path")
@@ -68,30 +64,30 @@ let edges = svg.selectAll("path")
 const ICONWIDTH = 64;
 const ICONHEIGHT = 64;
 
+// vertex
 let vertex = svg
     .selectAll("node")
-    .data(nodes);
-
-vertex.enter().append("image")
+    .data(nodes)
+    .enter().append("g")
+    .attr("transform", d => `translate(${d.x},${d.y})`)
     .attr("class", "node")
-    .attr("xlink:href", "http://simpleicon.com/wp-content/uploads/cloud-9-64x64.png")
-    .attr("x", d => d.x  - ICONWIDTH / 2)
-    .attr("y", d => d.y - ICONHEIGHT / 2)    
-    .attr("width", ICONWIDTH)
-    .attr("height", ICONHEIGHT);
+    .call(d3.drag()    
+            .on("start", dragstart)
+            .on("drag", dragged)
+            .on("end", dragend));
 
-vertex.enter().append("text")
-    .attr("class", "node_detail")
-    .attr("dx", d => d.x)
-    .attr("dy", d => d.y + ICONHEIGHT / 2)
-    .text(d => d.ip);
+vertex.append("image")
+        .attr("xlink:href", "http://simpleicon.com/wp-content/uploads/cloud-9-64x64.png")
+        .attr("x", d => -ICONWIDTH / 2)
+        .attr("y", d => -ICONHEIGHT / 2)    
+        .attr("width", ICONWIDTH)
+        .attr("height", ICONHEIGHT);
 
-// vertex
-vertex.call(d3.drag()
-    .on("start", dragstart)
-    .on("drag", dragged)
-    .on("end", dragend));
-
+vertex.append("text")
+        .attr("class", "node_detail")
+        .attr("dx", d => 0)
+        .attr("dy", d => ICONHEIGHT / 2)
+        .text(d => d.ip);
 
 // change position when dragged
 function dragged(d) {
@@ -99,21 +95,19 @@ function dragged(d) {
     d.x = d3.event.x;
     d.y = d3.event.y;
 
+    // change node position
     let node = d3.select(this);
-    node.attr("cx", d.x)
-        .attr("cy", d.y);
-    let link = edges.filter(function(v, i) {
-        if (v.source.id == d.id || v.target.id == d.id) {
-            return true;
-        }
-    });
+    node.attr("transform", d => `translate(${d.x},${d.y})`)
+    
+    // change link position
+    let link = edges.filter((v, i) => (v.source.id == d.id || v.target.id == d.id));
     link.attr("d", d => `M${d.source.x} ${d.source.y}`+ " " + `L${d.target.x} ${d.target.y}`);
 }
 
 function dragstart() {
-
+    console.log("drag started!");
 }
 
 function dragend() {
-
+    console.log("drag ended!");
 }
