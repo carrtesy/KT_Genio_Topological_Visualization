@@ -15,12 +15,14 @@ const files = [
 let fileindex = 0;
 
 render_page(`data/take${fileindex++%2}.json`);
-let timer = setInterval(() => {
-    let filename = `data/take${fileindex++%2}.json`; 
-    d3.selectAll('g').remove();
-    d3.selectAll("path").remove();
-    render_page(filename);
-}, 1000);
+
+// FOR LIVE OVERVIEW
+// let timer = setInterval(() => {
+//     let filename = `data/take${fileindex++%2}.json`; 
+//     d3.selectAll('g').remove();
+//     d3.selectAll("path").remove();
+//     render_page(filename);
+// }, 1000);
 
 // main logic
 function render_page(jsonfile){
@@ -99,6 +101,14 @@ function render_page(jsonfile){
 
         function dragend() {
             console.log("drag ended!");
+        }
+
+        var zoom_handler = d3.zoom()
+            .on("zoom", zoom_actions);
+
+        zoom_handler(svg);
+        function zoom_actions(){
+            g.attr("transform", d3.event.transform);
         }
     })
 }

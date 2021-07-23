@@ -1,0 +1,41 @@
+html,body, #canvas{
+    width:100%;
+    height:100%;
+  }
+  path.link {
+      fill: none;
+      stroke: #666;
+      stroke-width: 1.5px;
+      opacity: 0.8;
+  }
+  marker#resource {
+      fill:red;
+  }
+  path.link.resource {
+      /* stroke: green; */
+  }
+  path.link.property {
+      stroke-dasharray: 0, 2 1;
+  }
+  circle {
+      opacity:1;
+      stroke: #333;
+      stroke-width: 1.5px;
+  }
+  text {
+      font: 10px sans-serif;
+      pointer-events: none;
+  }
+  text.shadow {
+      stroke: #fff;
+      stroke-width: 3px;
+      stroke-opacity: .8;
+  }
+.nodes{opacity:1;}
+#btn{
+  position: fixed;
+  top:0;
+  left:0;
+  padding:20px;
+  background:#fff;
+}
