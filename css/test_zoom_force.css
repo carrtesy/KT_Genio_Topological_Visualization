@@ -11,8 +11,10 @@ html,body, #canvas{
   marker#resource {
       fill:red;
   }
+
+
   path.link.resource {
-      /* stroke: green; */
+      stroke: yellow;
   }
   path.link.property {
       stroke-dasharray: 0, 2 1;

@@ -1,6 +1,6 @@
 # KT Genio Topological Visualization
 
-## Perform Logs
+## Perform Logs`
 - 2021-07-19
 ![2021-07-19](images/2021-07-19-ui.gif)
 - 2021-07-16
@@ -21,6 +21,8 @@ from origin 'null' has been blocked by CORS policy: Cross origin requests are on
 ```
 
 이 경우, 
+** VSCode Live Server Plugin 사용**
+
 ```
 npm install http-server -g
 ```

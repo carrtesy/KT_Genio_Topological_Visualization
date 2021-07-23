@@ -119,6 +119,7 @@ let color = d3.scaleOrdinal(d3.schemeSet3);
 let svg = d3.select(canvas).append('svg')
         .attr('width', w)
         .attr('height', h);
+
 let rectWidth = 80,
     rectHeight = 30;
 let markerWidth =10,
@@ -184,6 +185,7 @@ function network(data, prev, cekGroup, expand){
 		lw=0,
 		newLinks=[];
 
+	console.log("func network: ", Object.getOwnPropertyNames(expand))
 	if(Object.getOwnPropertyNames(expand).length==0){
 		for(let j=0; j<data.nodes.length; j++){
 			groupIndex=cekGroup(data.nodes[j]);
@@ -262,39 +264,28 @@ function network(data, prev, cekGroup, expand){
     }
     return {nodes:nodes, links:links};
 }
-  
-d3
-.selectAll('.cb')
-.on('click',function(e){
-	d3.event.stopPropagation();
-	let manahide = this.children[0].getAttribute('id');
-    if(manahide=='cb1'){
-    	console.log(document.getElementById('cb1').checked);
-    	if(document.getElementById('cb1').checked){
-        	nodeElements.selectAll('.square').style('visibility','hidden');
-        	linkElements.style('visibility',function(x){
-        	return (x.type=='property'?'hidden':'visible');
-        	});
-    	} else {
-			nodeElements.selectAll('.square').style('visibility','visible');
-			linkElements.style('visibility','visible');
-      	}
-    }
-});
-  
+
+
 function hideLinkAlso(){}
-  
 let offset =0, groups, groupPath;
 
 // start of init
 function init(){
+	console.log("simumlation: ", simulation);
 	if(simulation){
+		console.log("if sim...");
 		linkElements.remove();
 		nodeElements.remove();
 		genCH.remove();
 		convexHull.remove();
 		textElements.remove();
 	}
+
+	console.log("dataku: ", dataku);
+	console.log("net: ", net);
+	console.log("getgroup: ", getGroup);
+	console.log("expand: ", expand);
+
 	net = network(dataku, net, getGroup, expand);
 	groups = d3.nest().key(function(d) { return d.group; }).entries(net.nodes);
 	groupPath = function(d) {
