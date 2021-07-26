@@ -11,16 +11,6 @@ body {
   background-color: black;
 }
 
-
-path.link.resource {
-  stroke: yellow;
-}
-
-path.link.property {
-  stroke: red;
-  stroke-dasharray: 0, 2 1;
-}
-
 .main {
   width: 100%;
   height: 100%; 

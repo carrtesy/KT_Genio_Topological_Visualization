@@ -116,6 +116,10 @@ let dataku = {
 
 "use strict";
 
+// load dataset
+// logic to load data
+
+// hyperparameters
 const image_link = {
 	"cloud": "images/pc-64x64.png",
 	"vm": "images/cloud-9-64x64.png",
@@ -130,15 +134,18 @@ const files = [
 const ICONWIDTH = 64;
 const ICONHEIGHT = 64;
 
+
+// outlines
 let canvas = document.getElementById('canvas');
 let w=canvas.clientWidth, h=canvas.clientHeight;
 let color = d3.scaleOrdinal(d3.schemeSet3);
 let svg = d3.select(canvas).append('svg')
-        .attr('width', w)
-        .attr('height', h);
+        	.attr('width', w)
+        	.attr('height', h);
 
 let rectWidth = 80,
     rectHeight = 30;
+
 let markerWidth =10,
 	markerHeight =6,
 	cRadius =40, // play with the cRadius value
@@ -161,33 +168,27 @@ let highlight_trans = 0.1;
 let default_node_color = "#ccc";
 //let default_node_color = "rgb(3,190,100)";
 let default_link_color = "#888";
-  
+
+
+
+// add graph
 let g = svg.append("g")
         .attr("class", "viz");
 
-let net, convexHull,genCH, linkElements, nodeElements, textElements, circle, simulation, linkForce,args;
+let net, convexHull,genCH, linkElements, nodeElements, textElements, circle, simulation, linkForce, args;
   
 let expand = {};
   
 let linkedByIndex = {};
-      dataku.links.forEach(function(d) {
-      linkedByIndex[d.source + "," + d.target] = true;
-      });
+dataku.links.forEach(function(d) {
+	linkedByIndex[d.source + "," + d.target] = true;
+});
 
-function isConnected(a, b) {
-    return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index == b.index;
-}
+let isConnected = (a, b) => linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index == b.index ;   
+let groupFill = (d, i) => color(d.key);
+let getGroup = n => n.group;
 
-function hasConnections(a) {
-    for (let cloud in linkedByIndex) {
-        	s = cloud.split(",");
-            if ((s[0] == a.index || s[1] == a.index) && linkedByIndex[cloud]) return true;
-        }
-    return false;
-}
-  
-let groupFill = function(d, i) {return color(d.key); };
-function getGroup(n) { return n.group; }
+
 function network(data, prev, cekGroup, expand){
 	let cnode,
 		groupIndex,
@@ -202,7 +203,6 @@ function network(data, prev, cekGroup, expand){
 		lw=0,
 		newLinks=[];
 
-	console.log("func network: ", Object.getOwnPropertyNames(expand))
 	if(Object.getOwnPropertyNames(expand).length==0){
 		for(let j=0; j<data.nodes.length; j++){
 			groupIndex=cekGroup(data.nodes[j]);
@@ -282,15 +282,12 @@ function network(data, prev, cekGroup, expand){
     return {nodes:nodes, links:links};
 }
 
-
-function hideLinkAlso(){}
 let offset =0, groups, groupPath;
 
 // start of init
 function init(){
-	console.log("simumlation: ", simulation);
+	// Reset Palette Here
 	if(simulation){
-		console.log("if sim...");
 		linkElements.remove();
 		nodeElements.remove();
 		genCH.remove();
@@ -298,60 +295,45 @@ function init(){
 		textElements.remove();
 	}
 
-	console.log("dataku: ", dataku);
-	console.log("net: ", net);
-	console.log("getgroup: ", getGroup);
-	console.log("expand: ", expand);
-
 	net = network(dataku, net, getGroup, expand);
-	groups = d3.nest().key(function(d) { return d.group; }).entries(net.nodes);
-	groupPath = function(d) {
-		let txt;
-		if(d.values.length==1){
-			return "M0,0L0,0L0,0Z";
-		} else {
-			return "M" + 
-			d3.polygonHull(d.values.map(function(i) {return [i.x+offset, i.y+offset]; }))
-			.join("L")
-			+ "Z";
-		} 
-	};
+	groups = d3.nest().key(d=>d.group).entries(net.nodes);
+	groupPath = d =>
+		d.values.length == 1? "M0,0L0,0L0,0Z": 
+		"M" + d3.polygonHull(d.values.map( i => [i.x+offset, i.y+offset])).join("L") + "Z";
+	
 
 	convexHull = g.append('g').attr('class','hull');
+	
 	// simulation setup with all forces
 	linkForce = d3
 		.forceLink()
-		.id(function (link) { return link.id })
-		.strength(function (link) { return 0.1 })
+		.id( link => link.id)
+		.strength( link => 0.1)
   
-  	let inpos = [], counterX = 1, inposY=[], counterY=1;
+  	let inpos = [], counterX = 1, inposY=[], counterY = 1;
+	
 	simulation = d3
-	.forceSimulation()
-	.force('link', linkForce)
-	.force('forceX', d3.forceX(function(d){
-		if(inpos[d.group]){
-		console.log(inpos);
-		return inpos[d.group];
-		} else {
-		inpos[d.group]=w/counterX;
-		console.log(inpos);
-		counterX++;
-		return inpos[d.group];
-		}
-	}))
-	.force('forceY', d3.forceY(function(d){
-		if(inposY[d.group]){
-		console.log(inposY);
-		return inposY[d.group];
-		} else {
-		inposY[d.group]=h/(Math.random()*(d.group.length-0+1)+1);
-		console.log(inposY);
-		return inposY[d.group];
-		}
-	}))
-    .force('charge', d3.forceManyBody().strength(-501))
-    .force('center', d3.forceCenter(w / 2, h / 2))
-    .force("gravity", d3.forceManyBody(1));
+		.forceSimulation()
+		.force('link', linkForce)
+		.force('forceX', d3.forceX(function(d){
+			if(inpos[d.group]){
+				return inpos[d.group];
+			} else {
+				inpos[d.group]=w/counterX++;
+				return inpos[d.group];
+			}
+		}))
+		.force('forceY', d3.forceY(function(d){
+			if(inposY[d.group]){
+				return inposY[d.group];
+			} else {
+				inposY[d.group]=h/(Math.random()*(d.group.length-0+1)+1);
+				return inposY[d.group];
+			}
+		}))
+		.force('charge', d3.forceManyBody().strength(-501))
+		.force('center', d3.forceCenter(w / 2, h / 2))
+		.force("gravity", d3.forceManyBody(1));
   
     // arrow head for line
     svg.append("svg:defs").selectAll("marker")
@@ -371,10 +353,8 @@ function init(){
 		.attr('class','links')
 		.selectAll('path')
 		.data(net.links).enter().append('path')
-		.attr('class',function(d){return 'link '+d.type;})
-		.attr('marker-end', function(d){
-			return 'url(#'+d.type+')';
-		});
+		.attr('class', d => `link ${d.type}`)
+		.attr('marker-end', d => `url(#${d.type})`);
   
 	nodeElements = g.append('g')
 		.attr('class','nodes')
@@ -384,24 +364,18 @@ function init(){
 		.attr('class', 'node')
 	
 	nodeElements.append("image")
-		.attr("xlink:href", function (d){
-			console.log("d: ", d);
-			console.log("d type: ", d.type);
-			console.log("href:", image_link[d.type]);
-			return image_link[d.type];
-		})
+		.attr("xlink:href", d => image_link[d.type])
 		.attr("x", d => -ICONWIDTH / 2)
 		.attr("y", d => -ICONHEIGHT / 2)    
 		.attr("width", ICONWIDTH)
 		.attr("height", ICONHEIGHT);
 
-	// .append('circle')
-	// .attr("r", cRadius)
-	// .attr("fill", function(d){ return color(d.group);});
-	// circle = nodeElements.filter(function(d){return d.type=='db';}).append('circle')
-	// 	.attr('class','circle')
-	// 	.attr("r", function(d){return d.size;})
-	// 	.attr("fill", function(d){ return color(d.group);});
+	circle = nodeElements
+		.filter(d => d.type === "db")
+		.append('circle')
+		.attr('class','circle')
+		.attr("r", d => d.size)
+		.attr("fill", d => color(d.group));
 	
 
 	nodeElements.call(d3.drag()
@@ -417,81 +391,60 @@ function init(){
 		.attr('text-anchor', 'middle')
 		.attr('alignment-baseline','middle')
 		.append('tspan')
-		.attr('dx',function(d) {
-		if(d.type=='cloud'){
-			return '40px';	
-		}
-		})
-		.attr('dy',function(d) {
-		if(d.type=='cloud'){
-			return '18px';
-		}
-		})
-		.text(function (node) { return  node.label });  
+		.attr('dx', d => "40px")
+		.attr('dy', d => "18px")
+		.text(node => node.label);  
     
-    simulation.nodes(net.nodes).on('tick', () => {
-		genCH = convexHull.selectAll("path")
-			.data(groups)
-			.attr("d", groupPath)
-			.enter().insert("path", "circle")
-			.style("fill", groupFill)
-			.style("stroke", groupFill)
-			.style("stroke-width", 140)
-			.style("stroke-linejoin", "round")
-			.style("opacity", .5)
-			.on('click',function(d){
-			expand[d.key] = false;
-			init();
-			})
-			.attr("d", groupPath);
-   
-		nodeElements
-			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";   })
-			// .attr('x', function (node) { console.log(node); return node.x })
-			// .attr('y', function (node) { return node.y })
-		textElements
-			.attr('x', function (node) { return node.x })
-			.attr('y', function (node) { return node.y })
-		linkElements
-			.attr('d', function(d){
-			let dx = d.target.x - d.source.x,
-			dy = d.target.y - d.source.y,
-			dr = Math.sqrt(dx * dx + dy * dy);
-			let val1 = 'M'+d.source.x+','+d.source.y+'L'+(d.target.x+40)+','+(d.target.y+rectHeight/2);
-			
-			let val = 'M'+d.source.x+','+d.source.y+'A'+(dr-drSub)+','+(dr-drSub)+' 0 0,1 '+d.target.x+','+d.target.y;
-			
-			let val2 = 'M'+d.source.x+','+d.source.y+'L'+(d.target.x)+','+(d.target.y);
-			if(d.type=='db') return val2;
-			else return val1;
-			});
+    simulation
+		.nodes(net.nodes)
+		.on('tick', () => {
+			genCH = convexHull.selectAll("path")
+				.data(groups)
+				.attr("d", groupPath)
+				.enter().insert("path", "circle")
+				.style("fill", groupFill)
+				.style("stroke", groupFill)
+				.style("stroke-width", 140)
+				.style("stroke-linejoin", "round")
+				.style("opacity", .5)
+				.on('click',function(d){
+					expand[d.key] = false;
+					init();
+				})
+				.attr("d", groupPath);
+	
+			nodeElements
+				.attr("transform", d => `translate(${d.x},${d.y})`)
+				.attr('x', node => node.x)
+				.attr('y', node => node.y);
+			textElements
+				.attr('x', node => node.x)
+				.attr('y', node => node.y);
+			linkElements
+				.attr('d', d => 'M'+d.source.x+','+d.source.y+'L'+(d.target.x)+','+(d.target.y));
   	})
     
     nodeElements
-	.on("mouseover", function(d) { set_highlight(d);})
-	.on("mousedown", function(d) { 
-    	d3.event.stopPropagation();
-        focus_node = d;
-    	console.log('mousedown');
-    	set_focus(d)
-    	if (highlight_node === null) set_highlight(d)})
-  	.on("mouseout", function(d) {
-    	exit_highlight();
-	})
-  	.on("click",function(d){
-		d3.event.stopPropagation();
-		console.log('click');
-		setExpand(d);
-		linkToPage(d);
-    });
+		.on("mouseover", function(d) { set_highlight(d);})
+		.on("mousedown", function(d) { 
+    		d3.event.stopPropagation();
+        	focus_node = d;
+    		console.log('mousedown');
+    		set_focus(d)
+    		if (highlight_node === null) set_highlight(d)})
+		.on("mouseout", function(d) {
+			exit_highlight();
+		})
+		.on("click",function(d){
+			d3.event.stopPropagation();
+			console.log('click');
+			setExpand(d);
+			linkToPage(d);
+		});
   
-	simulation.force("link").links(net.links).distance(function(d){
-		if(d.source.group==d.target.group) return 85;
-		else return 180;
-		// if(d.type=='db') return 300;
-  		// else return 150;
-    	// return d.distance;
-   	});
+	simulation.force("link")
+			.links(net.links)
+			.distance( d => d.source.group == d.target.group ? 85 : 180);
     
     function setExpand(d){
 		expand[d.id] = !expand[d.id];
@@ -504,41 +457,32 @@ function init(){
 			svg.style("cursor","move");
 			if (highlight_color!="white"){
 				circle.style(towhite, "white");
-				linkElements.style("stroke", function(o) {return (isNumber(o.score) && o.score>=0)?color(o.score):default_link_color});
-			} 
+				linkElements.style("stroke", o => (isNumber(o.score) && o.score>=0)? color(o.score): default_link_color);
+			}
       	}
   	}
   
   	function set_focus(d){
   		if (highlight_trans < 1) {
-    		circle.style("opacity", function(o) {
-        		return isConnected(d, o) ? 1 : highlight_trans;
-      		});
-  
-    		linkElements.style("opacity", function(o) {
-        		return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
-    		});
+    		circle.style("opacity", o => isConnected(d, o) ? 1 : highlight_trans);
+    		linkElements.style("opacity", o => o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans);
     	}
 	}
   
-  	function set_highlight(d){
-    	svg.style("cursor","pointer");
-    	// circle.style('opacity',0.7);
+  	function set_highlight(d) {
+    	svg.style("cursor", "pointer");
     	if (focus_node!==null) d = focus_node;
     	highlight_node = d;
-    	if (highlight_color!="white"){
-        	circle.style(towhite, function(o) {
-            return isConnected(d, o) ? highlight_color : "white";
-        });
-  //             linkElements.style("stroke", function(o) {
-  // 		      return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score>=0)?color(o.score):default_link_color);
-               // });
-      	}
+    	if (highlight_color != "white"){
+        	circle.style(towhite, o => isConnected(d, o) ? highlight_color : "white");
+		}
+    	linkElements.style("stroke", 
+			o => (o.source.index == d.index || o.target.index == d.index) ? 
+				highlight_color : ((isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color));
   	}
    
     function linkToPage(d){
 		if(d.link){
-			console.log('link');
 			window.open(d.link);
 		}
     }
@@ -559,7 +503,7 @@ function init(){
     	d.fx = null;
     	d.fy = null;
   	}
-    // endof init()
+    // end of init()
 }
   
 init();
