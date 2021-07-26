@@ -1,7 +1,7 @@
 let dataku = {
     'nodes':[{'id':'A',
           'label':'A',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'a',
               x:0,
@@ -9,110 +9,127 @@ let dataku = {
              },{
                'id':'B',
           'label':'B',
-          'type':'property',
+          'type':'cloud',
           'size':40,
           'group':'a'
              },{
                'id':'C',
           'label':'C',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'x',
            'link': 'http://google.com'
              },{
                'id':'D',
           'label':'D',
-          'type':'property',
+          'type':'cloud',
           'size':40,
           'group':'x'
              },{
                'id':'E',
           'label':'E',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'x'
              },{
                'id':'F',
           'label':'F',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'a'
              },{
                'id':'Q',
           'label':'Q',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'q'
              },{
                'id':'W',
           'label':'Wjk',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'q'
              },{
                'id':'Z',
           'label':'Z',
-          'type':'resource',
+          'type':'db',
           'size':40,
           'group':'q'
              }],
     'links':[{
       'source':'A',
           'target':'B',
-          'type':'property',
+          'type':'cloud',
           'distance':80,
           'strength':1
     },{
       'source':'E',
           'target':'B',
-          'type':'property',
+          'type':'cloud',
           'distance':80,
           'strength':1
     },{
       'source':'E',
           'target':'F',
-          'type':'resource',
+          'type':'db',
           'distance':300,
           'strength':1
     },{
       'source':'A',
           'target':'F',
-          'type':'resource',
+          'type':'db',
           'distance':300,
           'strength':1
     },{
       'source':'A',
           'target':'C',
-          'type':'resource',
+          'type':'db',
           'distance':300,
           'strength':1
     },{
       'source':'F',
           'target':'B',
-          'type':'property',
+          'type':'cloud',
           'distance':300,
           'strength':1
     },{
       'source':'Q',
           'target':'F',
-          'type':'resource',
+          'type':'db',
           'distance':300,
           'strength':1
     },{
       'source':'Q',
           'target':'E',
-          'type':'resource',
+          'type':'db',
           'distance':300,
           'strength':1
     },{
       'source':'W',
           'target':'Q',
-          'type':'resource',
+          'type':'db',
           'distance':300,
           'strength':1
     }]
   };
-  
+
+
+"use strict";
+
+const image_link = {
+	"cloud": "images/pc-64x64.png",
+	"vm": "images/cloud-9-64x64.png",
+	"db": "images/database.png",
+}
+
+const files = [
+	"data/take1.json",
+	"data/take2.json"
+]
+
+const ICONWIDTH = 64;
+const ICONHEIGHT = 64;
+
 let canvas = document.getElementById('canvas');
 let w=canvas.clientWidth, h=canvas.clientHeight;
 let color = d3.scaleOrdinal(d3.schemeSet3);
@@ -162,9 +179,9 @@ function isConnected(a, b) {
 }
 
 function hasConnections(a) {
-    for (let property in linkedByIndex) {
-        	s = property.split(",");
-            if ((s[0] == a.index || s[1] == a.index) && linkedByIndex[property]) return true;
+    for (let cloud in linkedByIndex) {
+        	s = cloud.split(",");
+            if ((s[0] == a.index || s[1] == a.index) && linkedByIndex[cloud]) return true;
         }
     return false;
 }
@@ -205,7 +222,7 @@ function network(data, prev, cekGroup, expand){
 					tempN={
 					'id':groupIndex,
 					'label':'domain '+groupIndex,
-					'type':'resource',
+					'type':'db',
 					'size':30,
 					'group':groupIndex
 						}; 
@@ -338,7 +355,7 @@ function init(){
   
     // arrow head for line
     svg.append("svg:defs").selectAll("marker")
-        .data(["resource", "property"])
+        .data(["db", "cloud"])
         .enter().append("svg:marker")
         .attr("id", String)
         .attr("viewBox", "0 -5 10 10")
@@ -350,28 +367,42 @@ function init(){
         .append("svg:path")
         .attr("d", "M0,-5L10,0L0,5");
   
-	linkElements = g.append('g').attr('class','links').selectAll('path').data(net.links).enter().append('path')
+	linkElements = g.append('g')
+		.attr('class','links')
+		.selectAll('path')
+		.data(net.links).enter().append('path')
 		.attr('class',function(d){return 'link '+d.type;})
 		.attr('marker-end', function(d){
 			return 'url(#'+d.type+')';
 		});
   
-	nodeElements = g.append('g').attr('class','nodes').selectAll('.node')
+	nodeElements = g.append('g')
+		.attr('class','nodes')
+		.selectAll('.node')
 		.data(net.nodes)
 		.enter().append('g')
-		.attr('class', 'node');
+		.attr('class', 'node')
+	
+	nodeElements.append("image")
+		.attr("xlink:href", function (d){
+			console.log("d: ", d);
+			console.log("d type: ", d.type);
+			console.log("href:", image_link[d.type]);
+			return image_link[d.type];
+		})
+		.attr("x", d => -ICONWIDTH / 2)
+		.attr("y", d => -ICONHEIGHT / 2)    
+		.attr("width", ICONWIDTH)
+		.attr("height", ICONHEIGHT);
+
 	// .append('circle')
 	// .attr("r", cRadius)
 	// .attr("fill", function(d){ return color(d.group);});
-	circle = nodeElements.filter(function(d){return d.type=='resource';}).append('circle')
-		.attr('class','circle')
-		.attr("r", function(d){return d.size;})
-		.attr("fill", function(d){ return color(d.group);});
-	nodeElements.filter(function(d){return d.type=='property';}).append('rect')
-		.attr('class','square')
-		.attr('width',rectWidth)
-		.attr('height',rectHeight)
-		.attr("fill", function(d){ return d3.hsl(color(d.group)).darker(2);});
+	// circle = nodeElements.filter(function(d){return d.type=='db';}).append('circle')
+	// 	.attr('class','circle')
+	// 	.attr("r", function(d){return d.size;})
+	// 	.attr("fill", function(d){ return color(d.group);});
+	
 
 	nodeElements.call(d3.drag()
 			.on("start", dragstarted)
@@ -387,12 +418,12 @@ function init(){
 		.attr('alignment-baseline','middle')
 		.append('tspan')
 		.attr('dx',function(d) {
-		if(d.type=='property'){
-			return '40px';
+		if(d.type=='cloud'){
+			return '40px';	
 		}
 		})
 		.attr('dy',function(d) {
-		if(d.type=='property'){
+		if(d.type=='cloud'){
 			return '18px';
 		}
 		})
@@ -431,7 +462,7 @@ function init(){
 			let val = 'M'+d.source.x+','+d.source.y+'A'+(dr-drSub)+','+(dr-drSub)+' 0 0,1 '+d.target.x+','+d.target.y;
 			
 			let val2 = 'M'+d.source.x+','+d.source.y+'L'+(d.target.x)+','+(d.target.y);
-			if(d.type=='resource') return val2;
+			if(d.type=='db') return val2;
 			else return val1;
 			});
   	})
@@ -457,7 +488,7 @@ function init(){
 	simulation.force("link").links(net.links).distance(function(d){
 		if(d.source.group==d.target.group) return 85;
 		else return 180;
-		// if(d.type=='resource') return 300;
+		// if(d.type=='db') return 300;
   		// else return 150;
     	// return d.distance;
    	});
