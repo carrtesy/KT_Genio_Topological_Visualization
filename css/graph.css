@@ -38,14 +38,35 @@ text {
   font-size: 10px;
 }
 
+.group_detail {
+  fill: white;
+  font-family: sans-serif;
+  font-size: 20px;
+  display:inline;
+}
 
+/* link descriptions */
+.linktexts text.normal{
+  fill: blue;
+}
 
+.linktexts text.warning{
+  fill: yellow;
+}
 
-path.link.cloud {
+.linktexts text.danger{
+  fill: red;
+}
+
+.links path.normal {
+  stroke: blue;
+}
+
+.links path.warning {
   stroke: yellow;
 }
 
-path.link.db {
+.links path.danger {
   stroke: red;
   stroke-dasharray: 0, 2 1;
 }

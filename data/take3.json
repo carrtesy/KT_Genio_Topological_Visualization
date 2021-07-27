@@ -87,84 +87,88 @@
             "target":"B",
             "type":"cloud",
             "distance":80,
-            "strength":1
+            "strength":1,
+            "tps": 100
         },
         {
             "source":"B",
             "target":"C",
             "type":"cloud",
             "distance":80,
-            "strength":1
+            "strength":1,
+            "tps": 200
         },
         {
             "source":"C",
             "target":"E",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 10
         },
         {
             "source":"C",
             "target":"D",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 25
         },
         {
             "source":"E",
             "target":"F",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 36
         },
         {
             "source":"F",
             "target":"G",
             "type":"db",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 42
         },
         {
             "source":"G",
             "target":"H",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 729
         },
         {
             "source":"H",
             "target":"I",
             "type":"cloud",
             "distance":300,
-            "strength":1
-        },
-        {
-            "source":"H",
-            "target":"I",
-            "type":"cloud",
-            "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 82
         },
         {
             "source":"C",
             "target":"I",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 98
         },
         {
             "source":"I",
             "target":"J",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 100
         },
         {
             "source":"J",
             "target":"K",
             "type":"cloud",
             "distance":300,
-            "strength":1
+            "strength":1,
+            "tps": 77
         }
     ]
     }
