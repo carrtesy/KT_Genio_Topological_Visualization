@@ -5,6 +5,7 @@ const image_link = {
 	"cloud": "images/cloud.png",
 	"vm": "images/server.png",
 	"db": "images/db.png",
+    "cluster": "images/cluster.png"
 }
 
 const files = [
@@ -17,12 +18,12 @@ const ICONHEIGHT = 64;
 
 const GROUP_LOCATION = {
     "Web Server 1": {x: 0, y:0},
-    "WAS Server 1":{x: 200, y:0},
-    "NAS":{x: 300, y:300},
-    "Queue Server 1":{x: 200, y:400},
-    "Engine Server 1":{x: 400, y:400},
-    "DB Server 1":{x: 400, y:0},
-    "Batch Server 1":{x: 600, y:0},
+    "WAS Server 1":{x: 300, y:0},
+    "NAS":{x: 450, y: 150},
+    "Queue Server 1":{x: 300, y:300},
+    "Engine Server 1":{x: 600, y:300},
+    "DB Server 1":{x: 600, y:0},
+    "Batch Server 1":{x: 900, y:0},
 }
 
 // outlines
@@ -70,9 +71,11 @@ d3.json(jsonfile, function(data){
     let g = svg.append("g")
     .attr("class", "viz");
 
-    let net, convexHull,genCH, linkElements, nodeElements, textElements, circle, simulation, linkForce, args;
+    let net, convexHull, genCH;
+    let linkElements, linkText;
+    let nodeElements, textElements;
+    let groupText, circle, simulation, linkForce, args;
 
-    let expand = {};
 
     let linkedByIndex = {};
     data.links.forEach(function(d) {
@@ -85,7 +88,8 @@ d3.json(jsonfile, function(data){
 
     // groups
     let offset =0, groups, groupPath;
-
+    // group is expanded or not (boolean)
+    let expand = {};
 
     // init here
     init();
@@ -100,15 +104,20 @@ d3.json(jsonfile, function(data){
             genCH.remove();
             convexHull.remove();
             textElements.remove();
+            groupText.remove();
+            linkText.remove();
         }
 
         net = network(data, net, getGroup, expand);
-        console.log(net);
+        
         groups = d3.nest().key(d=>d.group).entries(net.nodes);
         groupPath = function(d){
             // convex hull for 1, 2 points / and more then 3 points
+            let tmp = d.values.map(i => [i.x + offset, i.y + offset]);
             if (d.values.length == 1){
-                return "M0,0L0,0L0,0Z";
+                tmp.push([tmp[0][0], tmp[0][1]]);
+                tmp.push([tmp[0][0], tmp[0][1]]);
+                return "M" + d3.polygonHull(tmp).join("L") + "Z";
             } else if (d.values.length == 2){
                 let tmp = d.values.map(i => [i.x + offset, i.y + offset]);
                 tmp.push([tmp[0][0], tmp[0][1]]);
@@ -131,24 +140,11 @@ d3.json(jsonfile, function(data){
         simulation = d3
             .forceSimulation()
             .force('link', linkForce)
-            .force('forceX', d3.forceX(function(d){
+            .force('forceX', d3.forceX( function(d) {
                 return inpos[d.group] = GROUP_LOCATION[d.group].x;
-                if(inpos[d.group]){
-                    return inpos[d.group];
-                } else {
-                    inpos[d.group]=(w/10) * (counterX++);
-                    return inpos[d.group];
-                }
             }))
-            .force('forceY', d3.forceY(function(d){
-                
+            .force('forceY', d3.forceY( function(d) {
                 return inpos[d.group] = GROUP_LOCATION[d.group].y;
-                if(inposY[d.group]){
-                    return inposY[d.group];
-                } else {
-                    inposY[d.group] = (h/10) * (counterY++);
-                    return inposY[d.group];
-                }
             }))
             .force('charge', d3.forceManyBody().strength(-501))
             .force('center', d3.forceCenter(w / 2, h / 2))
@@ -168,13 +164,40 @@ d3.json(jsonfile, function(data){
             .append("svg:path")
             .attr("d", "M0,-5L10,0L0,5");
     
+        // link
         linkElements = g.append('g')
             .attr('class','links')
             .selectAll('path')
             .data(net.links).enter().append('path')
             .attr('class', d => `link ${d.type}`)
-            .attr('marker-end', d => `url(#${d.type})`);
+            .attr('marker-end', d => `url(#${d.type})`)
+            .attr("class", link => getStatus(link.tps));
     
+        // linktext
+        linkText = g.append("g")
+            .attr("class", "linktexts")
+            .selectAll("text")
+            .data(net.links)
+            .enter().append("text")
+            .attr("font-family", "Arial, Helvetica, sans-serif")
+            .attr("fill", "white")
+            .style("font", "normal 12px Arial")
+            .text(link => link.tps)
+            .attr("class", link => getStatus(link.tps));
+        
+        // grouptext
+        groupText = g.append("g")
+            .attr("class", "grouptexts")
+            .selectAll("text")
+            .data(groups)
+            .enter().append("text")
+            .attr("font-family", "Arial, Helvetica, sans-serif")
+            .attr("fill", "white")
+            .style("font", "normal 12px Arial")
+            .attr("opacity", g => expand[g.key] ? 1 : 0)
+            .text(g => g.key);
+
+        // node
         nodeElements = g.append('g')
             .attr('class','nodes')
             .selectAll('.node')
@@ -190,18 +213,17 @@ d3.json(jsonfile, function(data){
             .attr("height", ICONHEIGHT);
 
         circle = nodeElements
-            .filter(d => d.type === "db")
             .append('circle')
             .attr('class','circle')
             .attr("r", d => d.size)
             .attr("fill", d => color(d.group));
         
-
         nodeElements.call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
 
+        // text to node
         textElements = g.append("g")
             .attr("class", "texts")
             .selectAll("text")
@@ -214,6 +236,7 @@ d3.json(jsonfile, function(data){
             .attr('dy', d => "18px")
             .text(node => node.label);  
         
+        // simulation
         simulation
             .nodes(net.nodes)
             .on('tick', () => {
@@ -227,10 +250,9 @@ d3.json(jsonfile, function(data){
                     .style("stroke-linejoin", "round")
                     .style("opacity", .5)
                     .on('click',function(d){
-                        expand[d.key] = false;
+                        expand[d.key] = !expand[d.key];
                         init();
                     })
-                    .attr("d", groupPath);
         
                 nodeElements
                     .attr("transform", d => `translate(${d.x},${d.y})`)
@@ -241,6 +263,14 @@ d3.json(jsonfile, function(data){
                     .attr('y', node => node.y);
                 linkElements
                     .attr('d', d => 'M'+d.source.x+','+d.source.y+'L'+(d.target.x)+','+(d.target.y));
+                linkText
+                    .attr("x", d => 0.3 * d.source.x + 0.7 * d.target.x)
+                    .attr("y", d => 0.3 * d.source.y + 0.7 * d.target.y);
+                groupText
+                    .attr("x", g => g.values.length <= 1 ? g.values[0].x: 
+                        (g.values.reduce((a, b) => a.x < b.x? a.x: b.x) + g.values.reduce((a, b) => a.x > b.x? a.x: b.x)) / 2)
+                    .attr("y", g => g.values.length <= 1 ? g.values[0].y - ICONHEIGHT/2:
+                    g.values.reduce((a, b) => a.y < b.y? a.y: b.y) - ICONHEIGHT);
         })
         
         nodeElements
@@ -248,7 +278,6 @@ d3.json(jsonfile, function(data){
             .on("mousedown", function(d) { 
                 d3.event.stopPropagation();
                 focus_node = d;
-                console.log('mousedown');
                 set_focus(d)
                 if (highlight_node === null) set_highlight(d)})
             .on("mouseout", function(d) {
@@ -256,17 +285,27 @@ d3.json(jsonfile, function(data){
             })
             .on("click",function(d){
                 d3.event.stopPropagation();
-                console.log('click');
                 setExpand(d);
-                linkToPage(d);
             });
     
         simulation.force("link")
                 .links(net.links)
-                .distance( d => d.source.group == d.target.group ? 85 : 180);
+                .distance( d => d.source.group == d.target.group ? 150 : 300);
         
+
+        // other functions 
+        function getStatus(tps){
+            if(tps > 100){
+                return "warning";
+            } else if (tps > 60) {
+                return "danger";
+            } else {
+                return "normal";
+            }
+        }
+
         function setExpand(d){
-            expand[d.id] = !expand[d.id];
+            expand[d.group] = !expand[d.group];
             init();
         }
         
@@ -276,7 +315,7 @@ d3.json(jsonfile, function(data){
                 svg.style("cursor","move");
                 if (highlight_color!="white"){
                     circle.style(towhite, "white");
-                    linkElements.style("stroke", o => (isNumber(o.score) && o.score>=0)? color(o.score): default_link_color);
+                    linkElements.attr("class", link => getStatus(link.tps));
                 }
             }
         }
@@ -294,15 +333,6 @@ d3.json(jsonfile, function(data){
             highlight_node = d;
             if (highlight_color != "white"){
                 circle.style(towhite, o => isConnected(d, o) ? highlight_color : "white");
-            }
-            linkElements.style("stroke", 
-                o => (o.source.index == d.index || o.target.index == d.index) ? 
-                    highlight_color : ((isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color));
-        }
-    
-        function linkToPage(d){
-            if(d.link){
-                window.open(d.link);
             }
         }
     
@@ -358,6 +388,7 @@ function network(data, prev, cekGroup, expand){
     let nodes, links;
 
 	if(Object.getOwnPropertyNames(expand).length==0){
+        // INIT
 		for(let j=0; j<data.nodes.length; j++){
 			groupIndex=cekGroup(data.nodes[j]);
 			expand[groupIndex]=true;
@@ -365,30 +396,34 @@ function network(data, prev, cekGroup, expand){
 		nodes = data.nodes;
 		links = data.links;
 	} else {
+        // RESET
+
+        // nodes
 		for(let k=0; k<data.nodes.length; k++){
 			cnode=data.nodes[k];
 			groupIndex=cekGroup(cnode);
+            
+            //if expand true, nodes condition expand
 			if(expand[groupIndex]){
 				mappedNodes.push(cnode);
-				//if expand true, nodes condition expand
-			} else {
+			}
+            // if expand false, nodes condition collapse
+            else {
 				if(!newNodes[groupIndex]){
 					tempN={
-					'id':groupIndex,
-					'label':'domain '+groupIndex,
-					'type':'db',
-					'size':30,
-					'group':groupIndex
-						}; 
+                        'id': groupIndex,
+                        'label': groupIndex,
+                        'type': 'cluster',
+                        'size': 30,
+                        'group':groupIndex
+					};
 					newNodes[groupIndex]=tempN;
 					mappedNodes.push(tempN);
 				}
-				// if expand false, nodes condition collapse
 			}
-		//iterate through all data.nodes
 		}
 	
-      
+        // links
     	for(let x=0;x<data.links.length;x++){
         	clink = data.links[x];
 			soIn = cekGroup(clink.source);
@@ -424,7 +459,9 @@ function network(data, prev, cekGroup, expand){
 				'target':taIn,
 				'type':clink.type,
 				'distance':150,
-				'strength':1}
+				'strength':1,
+                "tps": clink.tps
+                }
 				mappedLinks.push(tempL);
         	}
 		}
@@ -433,5 +470,6 @@ function network(data, prev, cekGroup, expand){
       	links=mappedLinks;
     	// endof if expand not empty
     }
+
     return {nodes:nodes, links:links};
 }
