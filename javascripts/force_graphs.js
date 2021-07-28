@@ -152,7 +152,7 @@ d3.json(jsonfile, function(data){
     
         // arrow head for line
         svg.append("svg:defs").selectAll("marker")
-            .data(["db", "cloud", "vm"])
+            .data(["normal", "warning", "danger"])
             .enter().append("svg:marker")
             .attr("id", String)
             .attr("viewBox", "0 -5 10 10")
@@ -169,8 +169,8 @@ d3.json(jsonfile, function(data){
             .attr('class','links')
             .selectAll('path')
             .data(net.links).enter().append('path')
-            .attr('class', d => `link ${d.type}`)
-            .attr('marker-end', d => `url(#${d.type})`)
+            .attr('class', d => `link ${getStatus(d.tps)}`)
+            .attr('marker-end', d => `url(#${getStatus(d.tps)})`)
             .attr("class", link => getStatus(link.tps));
     
         // linktext

@@ -72,6 +72,19 @@ text {
 }
 
 
+/* Markers (Arrow head) */
+marker#warning {
+  fill:yellow;
+}
+
+marker#danger {
+  fill:red;
+}
+
+marker#normal {
+  fill:blue;
+}
+
 circle {
   opacity:0.1;
   stroke: yellow;
