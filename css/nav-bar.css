@@ -19,7 +19,7 @@
 .nav__btn {
   float: left;
   border-right: 1px solid black;
-  width: 20vh;
+  width: 25vh;
   transition: background-color 0.3s ease-in-out;
 }
 .nav__btn:first-child {
