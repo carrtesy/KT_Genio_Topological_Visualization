@@ -113,6 +113,20 @@ d3.json(jsonfile, function(data){
     }
     zoom_handler(svg);
     
+
+
+    // update links
+    let fileindex = 0;
+    let timer = setInterval(() => {
+        let filename = `data/diff${fileindex++%2}.json`; 
+        update(filename);
+    }, 1000);
+
+    // d3.json("data/diff0.json", function(diff){
+        // update(diff);
+    // })
+    
+
     // start of init declaration
     function init(){
         
@@ -190,7 +204,8 @@ d3.json(jsonfile, function(data){
             .data(net.links).enter().append('path')
             .attr('class', link => `link ${getStatus(link.tps)}`)
             .attr('marker-end', link => `url(#${getStatus(link.tps)})`)
-            .attr("class", link => getStatus(link.tps));
+            .attr("class", link => getStatus(link.tps))
+            .attr("id", link => `link${link.source}${link.target}`);
     
         // linktext
         linkText = g.append("g")
@@ -305,16 +320,6 @@ d3.json(jsonfile, function(data){
         
 
         // other helper functions 
-        function getStatus(tps){
-            if(tps > 100){
-                return "danger";
-            } else if (tps > 60) {
-                return "warning";
-            } else {
-                return "normal";
-            }
-        }
-
         function setExpand(node){
             expand[node.group] = !expand[node.group];
             init();
@@ -364,9 +369,47 @@ d3.json(jsonfile, function(data){
             d.fy = null;
         }
         
+
+
         // end of init()
     }
 
+    function update(file){
+        d3.json(file, function(diff){
+            
+            for(let i = 0; i < diff.links.length ; i++){
+                let update_info = diff.links[i];
+                let link =  net.links
+                            .filter(lk => (lk.source.id == update_info.source) && (lk.target.id == update_info.target))[0];
+                
+                for (const [key, value] of Object.entries(update_info)) {
+                    if(["source", "target"].indexOf(key) < 0){  
+                        link[key] = value;
+                    }
+                }
+
+                linkElements
+                .attr('class', link => `link ${getStatus(link.tps)}`)
+                .attr('marker-end', link => `url(#${getStatus(link.tps)})`)
+                .attr("class", link => getStatus(link.tps))
+                .attr("id", link => `link${link.source}${link.target}`);
+
+                linkText
+                .text(link => link.tps)
+                .attr("class", link => getStatus(link.tps));
+            }
+        })
+    }
+
+    function getStatus(tps){
+        if(tps > 100){
+            return "danger";
+        } else if (tps > 60) {
+            return "warning";
+        } else {
+            return "normal";
+        }
+    }
 });
 
 // function that returns network json

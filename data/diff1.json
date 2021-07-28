@@ -1,0 +1,12 @@
+{
+"links":[
+    {
+        "source":"A",
+        "target":"B",
+        "type":"tcp/ip",
+        "distance":80,
+        "strength":1,
+        "tps": 19
+    }
+    ]
+}
