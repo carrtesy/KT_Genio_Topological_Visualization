@@ -61,7 +61,7 @@ let default_link_color = "#888";
 
 // load dataset
 // logic to load data
-let jsonfile = "data/take3.json";
+let jsonfile = "data/take4.json";
 
 d3.json(jsonfile, function(data){
     console.log(jsonfile);
@@ -191,9 +191,6 @@ d3.json(jsonfile, function(data){
             .selectAll("text")
             .data(groups)
             .enter().append("text")
-            .attr("font-family", "Arial, Helvetica, sans-serif")
-            .attr("fill", "white")
-            .style("font", "normal 12px Arial")
             .attr("opacity", g => expand[g.key] ? 1 : 0)
             .text(g => g.key);
 
@@ -296,9 +293,9 @@ d3.json(jsonfile, function(data){
         // other functions 
         function getStatus(tps){
             if(tps > 100){
-                return "warning";
-            } else if (tps > 60) {
                 return "danger";
+            } else if (tps > 60) {
+                return "warning";
             } else {
                 return "normal";
             }

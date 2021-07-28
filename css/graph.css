@@ -15,35 +15,28 @@
   stroke-opacity: 1px;  
 }
 
+/* groups */
+g.grouptexts text {
+  fill: white;
+  font-family: sans-serif;
+  font-size: 15px;
+  display:inline;
+}
+
+
 /* nodes */
-g.node_ok {
-
-}
-
-g.node_bad {
-  outline: solid 3px red;
-  outline-offset: 5px;
-}
-
-/* node descriptions */
 text {
   fill: white;
   font-family: sans-serif;
   font-size: 10px;
 }
 
-.node_detail {
-  fill: white;
+text tspan{
+  fill: black;
   font-family: sans-serif;
   font-size: 10px;
 }
 
-.group_detail {
-  fill: white;
-  font-family: sans-serif;
-  font-size: 20px;
-  display:inline;
-}
 
 /* link descriptions */
 .linktexts text.normal{
@@ -60,6 +53,7 @@ text {
 
 .links path.normal {
   stroke: blue;
+  stroke-dasharray: 0, 2 1;
 }
 
 .links path.warning {
@@ -68,9 +62,8 @@ text {
 
 .links path.danger {
   stroke: red;
-  stroke-dasharray: 0, 2 1;
+  stroke-width: 2;
 }
-
 
 /* Markers (Arrow head) */
 marker#warning {
@@ -90,5 +83,3 @@ circle {
   stroke: yellow;
   stroke-width: 1.5px;
 }
-
-.nodes{opacity:1;}
