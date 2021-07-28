@@ -5,13 +5,25 @@ const image_link = {
 	"cloud": "images/cloud.png",
 	"vm": "images/server.png",
 	"db": "images/db.png",
-    "cluster": "images/cluster.png"
-}
+    "cluster": "images/cluster.png",
+    "server-cluster": "images/server-cluster.png",
+    "db-cluster": "images/db-cluster.png"
+};
 
 const files = [
 	"data/take1.json",
 	"data/take2.json"
-]
+];
+
+const GROUP_TYPE = {
+    "Web Server 1": "server-cluster",
+    "WAS Server 1": "server-cluster",
+    "NAS": "cluster",
+    "Queue Server 1": "server-cluster",
+    "Engine Server 1": "server-cluster",
+    "DB Server 1": "db-cluster",
+    "Batch Server 1": "server-cluster",
+};
 
 const ICONWIDTH = 64;
 const ICONHEIGHT = 64;
@@ -64,12 +76,9 @@ let default_link_color = "#888";
 let jsonfile = "data/take4.json";
 
 d3.json(jsonfile, function(data){
-    console.log(jsonfile);
-    console.log(data);
-
     // add graph
     let g = svg.append("g")
-    .attr("class", "viz");
+            .attr("class", "viz");
 
     let net, convexHull, genCH;
     let linkElements, linkText;
@@ -82,7 +91,9 @@ d3.json(jsonfile, function(data){
         linkedByIndex[d.source + "," + d.target] = true;
     });
 
-    let isConnected = (a, b) => linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index == b.index ;   
+    let isConnected = (a, b) => linkedByIndex[a.index + "," + b.index] 
+                                || linkedByIndex[b.index + "," + a.index] 
+                                || a.index == b.index ;   
     let groupFill = (d, i) => color(d.key);
     let getGroup = n => n.group;
 
@@ -94,8 +105,16 @@ d3.json(jsonfile, function(data){
     // init here
     init();
 
+    // add zoom capabilities
+    let zoom_handler = d3.zoom()
+        .on("zoom", zoom_actions);
+    function zoom_actions(){
+        g.attr("transform", d3.event.transform);
+    }
+    zoom_handler(svg);
+    
     // start of init declaration
-    function init(jsonfile){
+    function init(){
         
         // Reset Palette Here
         if(simulation){
@@ -169,8 +188,8 @@ d3.json(jsonfile, function(data){
             .attr('class','links')
             .selectAll('path')
             .data(net.links).enter().append('path')
-            .attr('class', d => `link ${getStatus(d.tps)}`)
-            .attr('marker-end', d => `url(#${getStatus(d.tps)})`)
+            .attr('class', link => `link ${getStatus(link.tps)}`)
+            .attr('marker-end', link => `url(#${getStatus(link.tps)})`)
             .attr("class", link => getStatus(link.tps));
     
         // linktext
@@ -179,9 +198,6 @@ d3.json(jsonfile, function(data){
             .selectAll("text")
             .data(net.links)
             .enter().append("text")
-            .attr("font-family", "Arial, Helvetica, sans-serif")
-            .attr("fill", "white")
-            .style("font", "normal 12px Arial")
             .text(link => link.tps)
             .attr("class", link => getStatus(link.tps));
         
@@ -191,8 +207,7 @@ d3.json(jsonfile, function(data){
             .selectAll("text")
             .data(groups)
             .enter().append("text")
-            .attr("opacity", g => expand[g.key] ? 1 : 0)
-            .text(g => g.key);
+            .text(group => group.key);
 
         // node
         nodeElements = g.append('g')
@@ -203,17 +218,17 @@ d3.json(jsonfile, function(data){
             .attr('class', 'node')
         
         nodeElements.append("image")
-            .attr("xlink:href", d => image_link[d.type])
-            .attr("x", d => -ICONWIDTH / 2)
-            .attr("y", d => -ICONHEIGHT / 2)    
+            .attr("xlink:href", node => image_link[node.type])
+            .attr("x", -ICONWIDTH / 2)
+            .attr("y", -ICONHEIGHT / 2)    
             .attr("width", ICONWIDTH)
             .attr("height", ICONHEIGHT);
 
         circle = nodeElements
             .append('circle')
             .attr('class','circle')
-            .attr("r", d => d.size)
-            .attr("fill", d => color(d.group));
+            .attr("r", node => node.size)
+            .attr("fill", node => color(node.group));
         
         nodeElements.call(d3.drag()
                 .on("start", dragstarted)
@@ -226,12 +241,11 @@ d3.json(jsonfile, function(data){
             .selectAll("text")
             .data(net.nodes)
             .enter().append('text')
-            .attr('text-anchor', 'middle')
-            .attr('alignment-baseline','middle')
             .append('tspan')
-            .attr('dx', d => "40px")
-            .attr('dy', d => "18px")
-            .text(node => node.label);  
+            .attr('dx', "40px")
+            .attr('dy', "18px")
+            .text(node => node.label)
+            .attr("opacity", node => expand[node.group] ? 1 : 0);
         
         // simulation
         simulation
@@ -246,51 +260,51 @@ d3.json(jsonfile, function(data){
                     .style("stroke-width", 140)
                     .style("stroke-linejoin", "round")
                     .style("opacity", .5)
-                    .on('click',function(d){
-                        expand[d.key] = !expand[d.key];
+                    .on('click',function(group){
+                        expand[group.key] = !expand[group.key];
                         init();
                     })
         
                 nodeElements
-                    .attr("transform", d => `translate(${d.x},${d.y})`)
+                    .attr("transform", node => `translate(${node.x},${node.y})`)
                     .attr('x', node => node.x)
                     .attr('y', node => node.y);
                 textElements
                     .attr('x', node => node.x)
                     .attr('y', node => node.y);
                 linkElements
-                    .attr('d', d => 'M'+d.source.x+','+d.source.y+'L'+(d.target.x)+','+(d.target.y));
+                    .attr('d', link => `M${link.source.x},${link.source.y}L${link.target.x},${link.target.y}`)
                 linkText
-                    .attr("x", d => 0.3 * d.source.x + 0.7 * d.target.x)
-                    .attr("y", d => 0.3 * d.source.y + 0.7 * d.target.y);
+                    .attr("x", link => 0.3 * link.source.x + 0.7 * link.target.x)
+                    .attr("y", link => 0.3 * link.source.y + 0.7 * link.target.y);
                 groupText
-                    .attr("x", g => g.values.length <= 1 ? g.values[0].x: 
-                        (g.values.reduce((a, b) => a.x < b.x? a.x: b.x) + g.values.reduce((a, b) => a.x > b.x? a.x: b.x)) / 2)
-                    .attr("y", g => g.values.length <= 1 ? g.values[0].y - ICONHEIGHT/2:
-                    g.values.reduce((a, b) => a.y < b.y? a.y: b.y) - ICONHEIGHT);
+                    .attr("x", group => group.values.length <= 1 ? group.values[0].x: 
+                        (group.values.reduce((a, b) => a.x < b.x? a.x: b.x) + group.values.reduce((a, b) => a.x > b.x? a.x: b.x)) / 2)
+                    .attr("y", group => group.values.length <= 1 ? group.values[0].y - ICONHEIGHT/2:
+                    group.values.reduce((a, b) => a.y < b.y? a.y: b.y) - ICONHEIGHT);
         })
         
         nodeElements
-            .on("mouseover", function(d) { set_highlight(d);})
-            .on("mousedown", function(d) { 
+            .on("mouseover", function(node) { set_highlight(node);})
+            .on("mousedown", function(node) { 
                 d3.event.stopPropagation();
-                focus_node = d;
-                set_focus(d)
-                if (highlight_node === null) set_highlight(d)})
-            .on("mouseout", function(d) {
+                focus_node = node;
+                set_focus(node);
+                if (highlight_node === null) set_highlight(node);})
+            .on("mouseout", function(node) {
                 exit_highlight();
             })
-            .on("click",function(d){
+            .on("click",function(node){
                 d3.event.stopPropagation();
-                setExpand(d);
+                setExpand(node);
             });
     
         simulation.force("link")
                 .links(net.links)
-                .distance( d => d.source.group == d.target.group ? 150 : 300);
+                .distance(link => link.source.group == link.target.group ? 150 : 300);
         
 
-        // other functions 
+        // other helper functions 
         function getStatus(tps){
             if(tps > 100){
                 return "danger";
@@ -301,8 +315,8 @@ d3.json(jsonfile, function(data){
             }
         }
 
-        function setExpand(d){
-            expand[d.group] = !expand[d.group];
+        function setExpand(node){
+            expand[node.group] = !expand[node.group];
             init();
         }
         
@@ -317,19 +331,19 @@ d3.json(jsonfile, function(data){
             }
         }
     
-        function set_focus(d){
+        function set_focus(node){
             if (highlight_trans < 1) {
-                circle.style("opacity", o => isConnected(d, o) ? 1 : highlight_trans);
-                linkElements.style("opacity", o => o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans);
+                circle.style("opacity", o => isConnected(node, o) ? 1 : highlight_trans);
+                linkElements.style("opacity", o => o.source.index == node.index || o.target.index == node.index ? 1 : highlight_trans);
             }
         }
     
-        function set_highlight(d) {
+        function set_highlight(node) {
             svg.style("cursor", "pointer");
-            if (focus_node!==null) d = focus_node;
-            highlight_node = d;
+            if (focus_node!==null) node = focus_node;
+            highlight_node = node;
             if (highlight_color != "white"){
-                circle.style(towhite, o => isConnected(d, o) ? highlight_color : "white");
+                circle.style(towhite, o => isConnected(node, o) ? highlight_color : "white");
             }
         }
     
@@ -351,19 +365,6 @@ d3.json(jsonfile, function(data){
         }
         
         // end of init()
-    }
-
-    //add zoom capabilities
-    let zoom_handler = d3.zoom()
-        .on("zoom", zoom_actions);
-
-    zoom_handler(svg);
-    function zoom_actions(){
-        g.attr("transform", d3.event.transform);
-    }
-
-    function isNumber(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
     }
 
 });
@@ -410,8 +411,8 @@ function network(data, prev, cekGroup, expand){
 					tempN={
                         'id': groupIndex,
                         'label': groupIndex,
-                        'type': 'cluster',
-                        'size': 30,
+                        'type': GROUP_TYPE[groupIndex],
+                        'size': 64,
                         'group':groupIndex
 					};
 					newNodes[groupIndex]=tempN;
@@ -452,12 +453,13 @@ function network(data, prev, cekGroup, expand){
 			}
         	console.log(soIn, taIn);
         	if(soIn!=''&&taIn!=''){
-				tempL = {'source':soIn,
-				'target':taIn,
-				'type':clink.type,
-				'distance':150,
-				'strength':1,
-                "tps": clink.tps
+				tempL = {
+                    'source':soIn,
+                    'target':taIn,
+                    'type':clink.type,
+                    'distance':150,
+                    'strength':1,
+                    "tps": clink.tps
                 }
 				mappedLinks.push(tempL);
         	}
