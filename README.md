@@ -2,6 +2,8 @@
 
 ## Perform Logs
 
+- 2021-07-28
+![2021-07-28](images/progress/2021-07-28-ui.gif)
 - 2021-07-27
 ![2021-07-27](images/progress/2021-07-27-ui.gif)
 - 2021-07-26
