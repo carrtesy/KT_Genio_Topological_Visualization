@@ -98,7 +98,7 @@ d3.json(jsonfile, function(data){
     let getGroup = n => n.group;
 
     // groups
-    let offset =0, groups, groupPath;
+    let offset = 0, groups, groupPath;
     // group is expanded or not (boolean)
     let expand = {};
 
@@ -112,20 +112,13 @@ d3.json(jsonfile, function(data){
         g.attr("transform", d3.event.transform);
     }
     zoom_handler(svg);
-    
-
 
     // update links
     let fileindex = 0;
     let timer = setInterval(() => {
-        let filename = `data/diff${fileindex++%2}.json`; 
+        let filename = `data/diff${fileindex++%4}.json`; 
         update(filename);
     }, 1000);
-
-    // d3.json("data/diff0.json", function(diff){
-        // update(diff);
-    // })
-    
 
     // start of init declaration
     function init(){

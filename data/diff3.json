@@ -1,0 +1,180 @@
+{
+    "links":[
+    {
+        "source":"A",
+        "target":"B",
+        "type":"tcp/ip",
+        "distance":80,
+        "strength":1,
+        "tps": 100
+    },
+    {
+        "source":"B",
+        "target":"C",
+        "type":"tcp/ip",
+        "distance":80,
+        "strength":1,
+        "tps": 200
+    },
+    {
+        "source":"B",
+        "target":"E",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 10
+    },
+    {
+        "source":"C",
+        "target":"D",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 25
+    },
+    {
+        "source":"C",
+        "target":"I",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 98
+    },
+    {
+        "source":"D",
+        "target":"J",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 25
+    },
+    {
+        "source":"D",
+        "target":"K",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 25
+    },
+    {
+        "source":"E",
+        "target":"F",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 36
+    },
+    {
+        "source":"F",
+        "target":"G",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 42
+    },
+    {
+        "source":"F",
+        "target":"N",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 42
+    },
+    {
+        "source":"F",
+        "target":"O",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 42
+    },
+    {
+        "source":"G",
+        "target":"H",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 729
+    },
+    {
+        "source":"H",
+        "target":"I",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 82
+    },
+    {
+        "source":"I",
+        "target":"J",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 100
+    },
+    {
+        "source":"I",
+        "target":"L",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 100
+    },
+    {
+        "source":"I",
+        "target":"M",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 100
+    },
+    {
+        "source":"K",
+        "target":"M",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"I",
+        "target":"M",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 100
+    },
+    {
+        "source":"J",
+        "target":"K",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 77
+    },
+    {
+        "source":"M",
+        "target":"N",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"N",
+        "target":"P",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"O",
+        "target":"Q",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    }
+]
+}
