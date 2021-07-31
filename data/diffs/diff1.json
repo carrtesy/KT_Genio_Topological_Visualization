@@ -1,0 +1,228 @@
+{    
+    "links":[
+    {
+        "source":"A",
+        "target":"B",
+        "type":"tcp/ip",
+        "distance":80,
+        "strength":1,
+        "tps": 10
+    },
+    {
+        "source":"B",
+        "target":"E",
+        "type":"tcp/ip",
+        "distance":80,
+        "strength":1,
+        "tps": 200
+    },
+    {
+        "source":"C",
+        "target":"D",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 120
+    },
+    {
+        "source":"D",
+        "target":"B",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 989
+    },
+    {
+        "source":"E",
+        "target":"F",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 25
+    },
+    {
+        "source":"F",
+        "target":"H",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 36
+    },
+    {
+        "source":"H",
+        "target":"G",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 42
+    },
+    {
+        "source":"F",
+        "target":"I",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 42
+    },
+    {
+        "source":"I",
+        "target":"J",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 42
+    },
+    {
+        "source":"J",
+        "target":"K",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"L",
+        "target":"J",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 12
+    },
+    {
+        "source":"L",
+        "target":"P",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 10
+    },
+    {
+        "source":"L",
+        "target":"M",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 10
+    },
+    {
+        "source":"M",
+        "target":"N",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 10
+    },
+    {
+        "source":"N",
+        "target":"O",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"O",
+        "target":"N",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 10
+    },
+    {
+        "source":"P",
+        "target":"O",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 77
+    },
+    {
+        "source":"O",
+        "target":"P",
+        "type":"LAN",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"O",
+        "target":"Q",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"Q",
+        "target":"O",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"Q",
+        "target":"R",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"R",
+        "target":"Q",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"O",
+        "target":"R",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"R",
+        "target":"O",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"Q",
+        "target":"S",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"S",
+        "target":"Q",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },        
+    {
+        "source":"S",
+        "target":"R",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 19
+    },
+    {
+        "source":"R",
+        "target":"S",
+        "type":"tcp/ip",
+        "distance":300,
+        "strength":1,
+        "tps": 190
+    }
+    ]
+}
