@@ -168,10 +168,6 @@ d3.json(jsonfile, function(data){
             .forceSimulation()
             .force('link', linkForce)
             .force('forceX', d3.forceX( function(d) {
-                
-                console.log(d);
-                console.log(d.group);
-                console.log(GROUP_LOCATION[d.group]);
                 return inpos[d.group] = GROUP_LOCATION[d.group].x;
             }))
             .force('forceY', d3.forceY( function(d) {
@@ -241,12 +237,28 @@ d3.json(jsonfile, function(data){
             .append('circle')
             .attr('class','circle')
             .attr("r", node => node.size)
-            .attr("fill", node => color(node.group));
+            .attr("fill", node => color(node.group))
+            .attr("opacity", 0.5);
         
         nodeElements.call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+
+        nodeElements
+                .on("mouseover", function(node) { set_highlight(node);})
+                .on("mouseout", function(node) {
+                    exit_highlight();
+                })
+                .on("contextmenu", function(node){
+                    d3.event.stopPropagation();
+                    d3.event.preventDefault();
+                    callModal(node);
+                })
+                .on("click",function(node){
+                    d3.event.stopPropagation();
+                    setExpand(node);
+                });
 
         // text to node
         textElements = g.append("g")
@@ -255,8 +267,8 @@ d3.json(jsonfile, function(data){
             .data(net.nodes)
             .enter().append('text')
             .append('tspan')
-            .attr('dx', "40px")
-            .attr('dy', "18px")
+            .attr('dx', "0px")
+            .attr('dy', "-12px")
             .text(node => node.label)
             .attr("opacity", node => expand[node.group] ? 1 : 0);
         
@@ -297,27 +309,37 @@ d3.json(jsonfile, function(data){
                     group.values.reduce((a, b) => a.y < b.y? a.y: b.y) - ICONHEIGHT);
         })
         
-        nodeElements
-            .on("mouseover", function(node) { set_highlight(node);})
-            .on("mousedown", function(node) { 
-                d3.event.stopPropagation();
-                focus_node = node;
-                set_focus(node);
-                if (highlight_node === null) set_highlight(node);})
-            .on("mouseout", function(node) {
-                exit_highlight();
-            })
-            .on("click",function(node){
-                d3.event.stopPropagation();
-                setExpand(node);
-            });
-    
         simulation.force("link")
                 .links(net.links)
                 .distance(link => link.source.group == link.target.group ? 150 : 300);
         
 
         // other helper functions 
+        function callModal(node){
+            $('#nodeInfoModal').modal("show");
+            let modal = $("#nodeInfoModal");
+            let head = `[Host Information] ${node.id}`;
+            let body = '';
+
+            // head
+            modal.find(".modal-header").html(head);
+
+            // body
+            body += `ID: ${node.id}\n`;
+
+            body += `type: ${node.type}\n`;
+            body += `group: ${node.group}\n`;
+            body += `label: ${node.label}\n\n`;
+
+            for (const [key, value] of Object.entries(node.info)) {
+                body += `${key}: ${value}\n`;
+            }
+            body = body.split('\n').map(line => `<span>${line}<br/></span>`)
+            modal.find(".modal-body").html(body);
+
+            console.log(text);
+        }
+
         function setExpand(node){
             expand[node.group] = !expand[node.group];
             init();
@@ -335,13 +357,11 @@ d3.json(jsonfile, function(data){
         }
     
         function set_focus(node){
-            if (highlight_trans < 1) {
-                circle.style("opacity", o => isConnected(node, o) ? 1 : highlight_trans);
-                linkElements.style("opacity", o => o.source.index == node.index || o.target.index == node.index ? 1 : highlight_trans);
-            }
+            console.log("set_focus!");
         }
     
         function set_highlight(node) {
+            console.log(node);
             svg.style("cursor", "pointer");
             if (focus_node!==null) node = focus_node;
             highlight_node = node;
@@ -367,8 +387,6 @@ d3.json(jsonfile, function(data){
             d.fy = null;
         }
         
-
-
         // end of init()
     }
 
@@ -381,7 +399,7 @@ d3.json(jsonfile, function(data){
                             .filter(lk => (lk.source.id == update_info.source) && (lk.target.id == update_info.target))[0];
                 
                 for (const [key, value] of Object.entries(update_info)) {
-                    if(["source", "target"].indexOf(key) < 0){  
+                    if(["source", "target"].indexOf(key) < 0 && link){  
                         link[key] = value;
                     }
                 }

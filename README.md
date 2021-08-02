@@ -1,8 +1,8 @@
 # KT Genio Topological Visualization
 
 ## Perform Logs
-- 2021-07-29
-![2021-07-29](images/progress/2021-07-29-ui.mp4)
+- 2021-08-02
+![2021-08-02](images/progress/2021-08-02-ui.gif)
 - 2021-07-28
 ![2021-07-28](images/progress/2021-07-28-ui.gif)
 - 2021-07-27
