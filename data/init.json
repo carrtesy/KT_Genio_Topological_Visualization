@@ -1,0 +1,496 @@
+{
+    "nodes":[
+        {
+            "id":"A",
+            "label":"Web Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"Web Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "Apache",
+                "framework": "Angular UI",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"B",
+            "label":"Web Server 2",
+            "type":"vm",
+            "size":40,
+            "group":"Web Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "Apache",
+                "framework": "Angular UI",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"C",
+            "label":"Web Server 3",
+            "type":"vm",
+            "size":40,
+            "group":"Web Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "Apache",
+                "framework": "Angular UI",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"D",
+            "label":"Web Server 4",
+            "type":"vm",
+            "size":40,
+            "group":"Web Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "Apache",
+                "framework": "Angular UI",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"E",
+            "label":"WAS Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"WAS Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "WildFly",
+                "framework": "Spring, Mybatis",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"F",
+            "label":"WAS Server 2",
+            "type":"vm",
+            "size":40,
+            "group":"WAS Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "WildFly",
+                "framework": "Spring, Mybatis",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"G",
+            "label":"WAS Server 3",
+            "type":"vm",
+            "size":40,
+            "group":"WAS Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "WildFly",
+                "framework": "Spring, Mybatis",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"H",
+            "label":"WAS Server 4",
+            "type":"vm",
+            "size":40,
+            "group":"WAS Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "WildFly",
+                "framework": "Spring, Mybatis",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"I",
+            "label":"NAS 1",
+            "type":"cloud",
+            "size":40,
+            "group":"NAS",
+            "info": {
+                "Usable GB": "1000GB"
+            }
+        },
+        {
+            "id":"J",
+            "label":"NAS 2",
+            "type":"cloud",
+            "size":40,
+            "group":"NAS",
+            "info": {
+                "Usable GB": "1000GB"
+            }
+        },
+        {
+            "id":"K",
+            "label":"NAS 3",
+            "type":"cloud",
+            "size":40,
+            "group":"NAS",
+            "info": {
+                "Usable GB": "1000GB"
+            }
+        },
+        {
+            "id":"L",
+            "label":"Batch Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"Batch Layer",
+            "info": {
+                "OS": "CentOS",
+                "web": "WildFly",
+                "framework": "Spring Batch, Quartz",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB X2",
+                "Storage": "300GB X2"
+            }
+        },
+        {
+            "id":"M",
+            "label":"DB Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"DB Layer",
+            "info": {
+                "OS": "CentOS",
+                "DB": "POStgreSQL",
+                "이중화": "LifeKeeper",
+                "CPU": "24 vCore X2",
+                "Memory": "48GB X2",
+                "Storage": "3000GB"
+            }
+        },
+        {
+            "id":"N",
+            "label":"DB Server 2",
+            "type":"vm",
+            "size":40,
+            "group":"DB Layer",
+            "info": {
+                "OS": "CentOS",
+                "DB": "POStgreSQL",
+                "이중화": "LifeKeeper",
+                "CPU": "24 vCore X2",
+                "Memory": "48GB X2",
+                "Storage": "3000GB"
+            }
+        },
+        {
+            "id":"O",
+            "label":"Queue Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"Core Layer",
+            "info": {
+                "OS": "CentOS",
+                "3rd Party": "RabbitMQ",
+                "이중화": "LifeKeeper",
+                "CPU": "16 vCore X2",
+                "Memory": "32GB",
+                "Storage": "600GB"
+            }
+        },
+        {
+            "id":"P",
+            "label":"Engine Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"Ansible Core 1",
+            "info": {
+                "OS": "CentOS",
+                "3rd Party": "Ansible Celery",
+                "CPU": "24 vCore",
+                "Memory": "48GB",
+                "Storage": "300GB"
+            }
+        },
+        {
+            "id":"Q",
+            "label":"Engine Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"Ansible Core 2",
+            "info": {
+                "OS": "CentOS",
+                "3rd Party": "Ansible Celery",
+                "CPU": "24 vCore",
+                "Memory": "48GB",
+                "Storage": "300GB"
+            }
+        },
+        {
+            "id":"R",
+            "label":"Engine Server 1",
+            "type":"vm",
+            "size":40,
+            "group":"Ansible Core 3",
+            "info": {
+                "OS": "CentOS",
+                "3rd Party": "Ansible Celery",
+                "CPU": "24 vCore",
+                "Memory": "48GB",
+                "Storage": "300GB"
+            }
+        },
+        {
+            "id":"S",
+            "label":"Proxy Server 1",
+            "type":"db",
+            "size":40,
+            "group":"Proxy Server",
+            "info": {
+                "OS": "CentOS",
+                "3rd Party": "Proxy",
+                "CPU": "24 vCore",
+                "Memory": "48GB",
+                "Storage": "300GB"
+            }
+        }
+        ],
+        "links":[
+        {
+            "source":"A",
+            "target":"B",
+            "type":"tcp/ip",
+            "distance":80,
+            "strength":1,
+            "tps": 100
+        },
+        {
+            "source":"B",
+            "target":"E",
+            "type":"tcp/ip",
+            "distance":80,
+            "strength":1,
+            "tps": 200
+        },
+        {
+            "source":"C",
+            "target":"D",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 10
+        },
+        {
+            "source":"D",
+            "target":"B",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 98
+        },
+        {
+            "source":"E",
+            "target":"F",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 25
+        },
+        {
+            "source":"F",
+            "target":"H",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 36
+        },
+        {
+            "source":"H",
+            "target":"G",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 42
+        },
+        {
+            "source":"F",
+            "target":"I",
+            "type":"LAN",
+            "distance":300,
+            "strength":1,
+            "tps": 42
+        },
+        {
+            "source":"I",
+            "target":"J",
+            "type":"LAN",
+            "distance":300,
+            "strength":1,
+            "tps": 42
+        },
+        {
+            "source":"J",
+            "target":"K",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 729
+        },
+        {
+            "source":"L",
+            "target":"J",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 82
+        },
+        {
+            "source":"L",
+            "target":"P",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 100
+        },
+        {
+            "source":"L",
+            "target":"M",
+            "type":"LAN",
+            "distance":300,
+            "strength":1,
+            "tps": 100
+        },
+        {
+            "source":"M",
+            "target":"N",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 100
+        },
+        {
+            "source":"N",
+            "target":"O",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"O",
+            "target":"N",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 100
+        },
+        {
+            "source":"P",
+            "target":"O",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 77
+        },
+        {
+            "source":"O",
+            "target":"P",
+            "type":"LAN",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"O",
+            "target":"Q",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"Q",
+            "target":"O",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"Q",
+            "target":"R",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"R",
+            "target":"Q",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"O",
+            "target":"R",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"R",
+            "target":"O",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"Q",
+            "target":"S",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"S",
+            "target":"Q",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },        
+        {
+            "source":"S",
+            "target":"R",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        },
+        {
+            "source":"R",
+            "target":"S",
+            "type":"tcp/ip",
+            "distance":300,
+            "strength":1,
+            "tps": 19
+        }
+    ]
+}
