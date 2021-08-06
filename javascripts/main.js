@@ -267,8 +267,8 @@ d3.json(jsonfile, function(data){
             .data(net.nodes)
             .enter().append('text')
             .append('tspan')
-            .attr('dx', "0px")
-            .attr('dy', "-12px")
+            .attr('dx', "-36px")
+            .attr('dy', "0px")
             .text(node => node.label)
             .attr("opacity", node => expand[node.group] ? 1 : 0);
         
