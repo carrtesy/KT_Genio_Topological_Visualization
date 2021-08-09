@@ -8,10 +8,6 @@ resources:
   memory_gb: 0.5
   disk_size_gb: 10
 
-env_variables: 
-  NODE_ENV : development 
-  PORT: 8080
-
 handlers: 
   - url: / 
     static_files: index.html 
