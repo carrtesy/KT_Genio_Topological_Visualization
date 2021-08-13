@@ -9,12 +9,6 @@ http://topovis.de.r.appspot.com/
 ![2021-08-02](images/progress/2021-08-02-ui.gif)
 
 
-## Sources
-![cloud](images/cloud-9-64x64.png)
-http://simpleicon.com/wp-content/uploads/cloud-9-64x64.png
-![machine](images/machine_1-64x64.png)
-http://simpleicon.com/wp-content/uploads/monitor_1-64x64.png
-
 ## Troubleshooting
 1. CORS Policy: https://velog.io/@takeknowledge/%EB%A1%9C%EC%BB%AC%EC%97%90%EC%84%9C-CORS-policy-%EA%B4%80%EB%A0%A8-%EC%97%90%EB%9F%AC%EA%B0%80-%EB%B0%9C%EC%83%9D%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0-3gk4gyhreu 
 
