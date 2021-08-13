@@ -1,18 +1,13 @@
 # KT Genio Topological Visualization
 
-## Perform Logs
+## Live View
+Code Deployed at:
+http://topovis.de.r.appspot.com/
+
+## Video Clip
 - 2021-08-02
 ![2021-08-02](images/progress/2021-08-02-ui.gif)
-- 2021-07-28
-![2021-07-28](images/progress/2021-07-28-ui.gif)
-- 2021-07-27
-![2021-07-27](images/progress/2021-07-27-ui.gif)
-- 2021-07-26
-![2021-07-26](images/progress/2021-07-26-ui.gif)
-- 2021-07-19
-![2021-07-19](images/progress/2021-07-19-ui.gif)
-- 2021-07-16
-![2021-07-16](images/progress/2021-07-16-ui.JPG)
+
 
 ## Sources
 ![cloud](images/cloud-9-64x64.png)
