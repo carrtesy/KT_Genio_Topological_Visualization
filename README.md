@@ -9,6 +9,11 @@ http://topovis.de.r.appspot.com/
 ![2021-08-02](images/progress/2021-08-02-ui.gif)
 
 
+## Useful Sources
+- graph with convex hull (main source): https://codepen.io/hadis-kia/pen/RwNWXje
+- graph topology: https://codepen.io/jingxiao/pen/XNzgrv
+- node labeling: https://bl.ocks.org/mbostock/950642
+
 ## Troubleshooting
 1. CORS Policy: https://velog.io/@takeknowledge/%EB%A1%9C%EC%BB%AC%EC%97%90%EC%84%9C-CORS-policy-%EA%B4%80%EB%A0%A8-%EC%97%90%EB%9F%AC%EA%B0%80-%EB%B0%9C%EC%83%9D%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0-3gk4gyhreu 
 
