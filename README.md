@@ -1,8 +1,7 @@
 # KT Genio Topological Visualization
 
 ## Live View
-Code Deployed at:
-http://topovis.de.r.appspot.com/
+<strike>Code Deployed at: http://topovis.de.r.appspot.com/</strike>
 
 ## Video Clip
 - 2021-08-02
